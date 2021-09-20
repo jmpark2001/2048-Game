@@ -44,7 +44,7 @@ public class State implements GameState {
 	public void setEmptyBoard() {
 		for(int x=0; x<4; x++) {
 			for(int y=0; y<4; y++) {
-				board[x][y] = 0;
+				setValue(x, y, 0);
 			}
 		}
 	}
@@ -54,7 +54,7 @@ public class State implements GameState {
 		int count = 0;
 		for(int x=0; x<4; x++) {
 			for(int y=0; y<4; y++) {
-				if(board[x][y] == 0) {
+				if(getValue(x, y) == 0) {
 					count++;
 				}
 			}
@@ -101,37 +101,120 @@ public class State implements GameState {
 
 	@Override
 	public boolean canMerge() {
-		// TODO Auto-generated method stub
-		return false;
+		int merger = 0;
+		for(int x=0; x<4; x++) {
+			if(getValue(x, 0) == getValue(x, 1)) {
+				
+			}
+		}
+		
+		if(merger == 0) {
+			return false;
+		}
+		return true;
 	}
 
 	@Override
 	public boolean reachedThreshold() {
-		// TODO Auto-generated method stub
+		for(int x=0; x<4; x++) {
+			for(int y=0; y<4; y++) {
+				if(getValue(x,y) >= 2048) {
+					return true;
+				}
+			}
+		}
 		return false;
 	}
 
 	@Override
 	public int left() {
-		// TODO Auto-generated method stub
+		int value = 0;
+		for(int x=0; x<4; x++) {
+			for(int y=3; y>0; y--) {
+				if(getValue(x, y) != 0) {
+					value = getValue(x, y);
+					if(getValue(x, y-1) == 0) {
+						setValue(x, y, 0);
+						setValue(x, y-1, value);
+					}
+					else {
+						if(getValue(x, y-1) == getValue(x, y)) {
+							setValue(x, y, 0);
+							setValue(x, y-1, value + value);
+						}
+					}
+				}
+			}
+		}
 		return 0;
 	}
 
 	@Override
 	public int right() {
-		// TODO Auto-generated method stub
+		int value = 0;
+		for(int x=0; x<4; x++) {
+			for(int y=0; y<3; y++) {
+				if(getValue(x, y) != 0) {
+					value = getValue(x, y);
+					if(getValue(x, y+1) == 0) {
+						setValue(x, y, 0);
+						setValue(x, y+1, value);
+					}
+					else {
+						if(getValue(x, y+1) == getValue(x, y)) {
+							setValue(x, y, 0);
+							setValue(x, y+1, value + value);
+						}
+					}
+				}
+			}
+		}
 		return 0;
 	}
 
 	@Override
 	public int down() {
-		// TODO Auto-generated method stub
+		int value = 0;
+		for(int x=0; x<3; x++) {
+			for(int y=0; y<4; y++) {
+				if(getValue(x, y) != 0) {
+					value = getValue(x, y);
+					if(getValue(x+1, y) == 0) {
+						setValue(x, y, 0);
+						setValue(x+1, y, value);
+					}
+					else {
+						if(getValue(x, y) == getValue(x+1, y)) {
+							setValue(x, y, 0);
+							setValue(x+1, y, value + value);
+						}
+					}
+				}
+			}
+		}
 		return 0;
 	}
 
 	@Override
 	public int up() {
-		// TODO Auto-generated method stub
+		int value = 0;
+		for(int x=3; x>0; x--) {
+			for(int y=0; y<4; y++) {
+				if(getValue(x, y) != 0) {
+					value = getValue(x, y);
+					if(getValue(x-1, y) == 0) {
+						setValue(x, y, 0);
+						setValue(x-1, y, value);
+					}
+					else {
+						if(getValue(x, y) == getValue(x-1, y)) {
+							setValue(x, y, 0);
+							setValue(x-1, y, value + value);
+						}
+					}
+				}
+			}
+		}
 		return 0;
 	}
 
