@@ -132,9 +132,6 @@ public class State implements GameState {
 							if(row - x == 0) {
 								return true;
 							}
-							/*else {
-								
-							}*/
 							row++;
 						}
 					}
