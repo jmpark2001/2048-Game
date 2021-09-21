@@ -101,7 +101,7 @@ public class State implements GameState {
 
 	@Override
 	public boolean canMerge() {
-		/*int value = 0;
+		int value = 0;
 		int row = 0;
 		int col = 0;
 		int middle = 0;
@@ -116,14 +116,14 @@ public class State implements GameState {
 							if(col - y == 0) {
 								return true;
 							}
-							else {
+							/*else {
 								middle = col - y;
 								while(middle != 0) {
 									if(getValue(row, col - middle) == 0) {
 										middle--;
 									}
 								}
-							}
+							}*/
 							col++;
 						}
 					}
@@ -132,15 +132,16 @@ public class State implements GameState {
 							if(row - x == 0) {
 								return true;
 							}
-							else {
+							/*else {
 								
-							}
+							}*/
+							row++;
 						}
 					}
 					
 				}
 			}
-		}*/
+		}
 		return false;
 	}
 
@@ -160,18 +161,18 @@ public class State implements GameState {
 	public int left() {
 		int extraPoints = 0;
 		int value = 0;
-		for(int x=0; x<4; x++) {
-			for(int y=3; y>0; y--) {
+		for(int x=3; x>0; x--) {
+			for(int y=0; y<4; y++) {
 				if(getValue(x, y) != 0) {
 					value = getValue(x, y);
-					if(getValue(x, y-1) == 0) {
+					if(getValue(x-1, y) == 0) {
 						setValue(x, y, 0);
-						setValue(x, y-1, value);
+						setValue(x-1, y, value);
 					}
 					else {
-						if(getValue(x, y-1) == getValue(x, y)) {
+						if(getValue(x, y) == getValue(x-1, y)) {
 							setValue(x, y, 0);
-							setValue(x, y-1, value + value);
+							setValue(x-1, y, value + value);
 							extraPoints += value + value;
 						}
 					}
@@ -183,31 +184,6 @@ public class State implements GameState {
 
 	@Override
 	public int right() {
-		int extraPoints = 0;
-		int value = 0;
-		for(int x=0; x<4; x++) {
-			for(int y=0; y<3; y++) {
-				if(getValue(x, y) != 0) {
-					value = getValue(x, y);
-					if(getValue(x, y+1) == 0) {
-						setValue(x, y, 0);
-						setValue(x, y+1, value);
-					}
-					else {
-						if(getValue(x, y+1) == getValue(x, y)) {
-							setValue(x, y, 0);
-							setValue(x, y+1, value + value);
-							extraPoints += value + value;
-						}
-					}
-				}
-			}
-		}
-		return extraPoints;
-	}
-
-	@Override
-	public int down() {
 		int extraPoints = 0;
 		int value = 0;
 		for(int x=0; x<3; x++) {
@@ -232,21 +208,46 @@ public class State implements GameState {
 	}
 
 	@Override
+	public int down() {
+		int extraPoints = 0;
+		int value = 0;
+		for(int x=0; x<4; x++) {
+			for(int y=0; y<3; y++) {
+				if(getValue(x, y) != 0) {
+					value = getValue(x, y);
+					if(getValue(x, y+1) == 0) {
+						setValue(x, y, 0);
+						setValue(x, y+1, value);
+					}
+					else {
+						if(getValue(x, y+1) == getValue(x, y)) {
+							setValue(x, y, 0);
+							setValue(x, y+1, value + value);
+							extraPoints += value + value;
+						}
+					}
+				}
+			}
+		}
+		return extraPoints;
+	}
+
+	@Override
 	public int up() {
 		int extraPoints = 0;
 		int value = 0;
-		for(int x=3; x>0; x--) {
-			for(int y=0; y<4; y++) {
+		for(int x=0; x<4; x++) {
+			for(int y=3; y>0; y--) {
 				if(getValue(x, y) != 0) {
 					value = getValue(x, y);
-					if(getValue(x-1, y) == 0) {
+					if(getValue(x, y-1) == 0) {
 						setValue(x, y, 0);
-						setValue(x-1, y, value);
+						setValue(x, y-1, value);
 					}
 					else {
-						if(getValue(x, y) == getValue(x-1, y)) {
+						if(getValue(x, y-1) == getValue(x, y)) {
 							setValue(x, y, 0);
-							setValue(x-1, y, value + value);
+							setValue(x, y-1, value + value);
 							extraPoints += value + value;
 						}
 					}
