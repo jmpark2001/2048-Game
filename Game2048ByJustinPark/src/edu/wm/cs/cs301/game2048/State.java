@@ -157,10 +157,20 @@ public class State implements GameState {
 	
 	@Override
 	public boolean canMerge() {
-		int value = 0;
-		for(int x=0; x<4; x++) {
-			for(int y=0; y<4; y++) {
-				
+		for(int x=0; x<=3; x++) {
+			for(int y=0; y<=3; y++) {
+				if(mergeLeft(x, y) == true) {
+					return true;
+				}
+				if(mergeRight(x, y) == true) {
+					return true;
+				}
+				if(mergeUp(x, y) == true) {
+					return true;
+				}
+				if(mergeDown(x, y) == true) {
+					return true;
+				}
 			}
 		}
 		return false;
