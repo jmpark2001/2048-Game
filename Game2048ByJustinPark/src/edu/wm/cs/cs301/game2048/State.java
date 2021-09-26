@@ -158,19 +158,22 @@ public class State implements GameState {
 	public int left() {
 		int extraPoints = 0;
 		int value = 0;
-		for(int x=3; x>0; x--) {
-			for(int y=0; y<4; y++) {
-				if(getValue(x, y) != 0) {
-					value = getValue(x, y);
-					if(getValue(x-1, y) == 0) {
-						setValue(x, y, 0);
-						setValue(x-1, y, value);
-					}
-					else {
-						if(getValue(x, y) == getValue(x-1, y)) {
-							setValue(x, y, 0);
-							setValue(x-1, y, value + value);
+		for(int col=3; col>=0; col--) {
+			int mover = 0;
+			for(int row=0; row<=3; row++) {
+				if(getValue(row, col) == 0) {
+					mover += 1;
+				}
+				else {
+					value = getValue(row, col);
+					setValue(row, col, 0);
+					setValue(row - mover, col, value);
+					if(row - mover > 0) {
+						if(getValue(row - mover, col) == getValue(row - mover - 1, col)) {
+							setValue(row - mover, col, 0);
+							setValue(row - mover - 1, col, value + value);
 							extraPoints += value + value;
+							mover += 1;
 						}
 					}
 				}
@@ -197,6 +200,7 @@ public class State implements GameState {
 						if(getValue(row + mover, col) == getValue(row + mover + 1, col)) {
 							setValue(row + mover, col, 0);
 							setValue(row + mover + 1, col, value + value);
+							extraPoints += value + value;
 							mover += 1;
 						}
 					}
