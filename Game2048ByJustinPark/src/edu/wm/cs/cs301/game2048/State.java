@@ -1,5 +1,4 @@
 package edu.wm.cs.cs301.game2048;
-import java.util.Arrays;
 import java.util.Random;
 
 public class State implements GameState {
@@ -184,19 +183,21 @@ public class State implements GameState {
 	public int right() {
 		int extraPoints = 0;
 		int value = 0;
-		for(int x=0; x<3; x++) {
-			for(int y=0; y<4; y++) {
-				if(getValue(x, y) != 0) {
-					value = getValue(x, y);
-					if(getValue(x+1, y) == 0) {
-						setValue(x, y, 0);
-						setValue(x+1, y, value);
-					}
-					else {
-						if(getValue(x, y) == getValue(x+1, y)) {
-							setValue(x, y, 0);
-							setValue(x+1, y, value + value);
-							extraPoints += value + value;
+		for(int col=3; col>=0; col--) {
+			int mover = 0;
+			for(int row=3; row>=0; row--) {
+				if(getValue(row, col) == 0) {
+					mover += 1;
+				}
+				else {
+					value = getValue(row, col);
+					setValue(row, col, 0);
+					setValue(row + mover, col, value);
+					if(row + mover < 3) {
+						if(getValue(row + mover, col) == getValue(row + mover + 1, col)) {
+							setValue(row + mover, col, 0);
+							setValue(row + mover + 1, col, value + value);
+							mover += 1;
 						}
 					}
 				}
@@ -253,26 +254,6 @@ public class State implements GameState {
 			}
 		}
 		return extraPoints;
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + Arrays.deepHashCode(board);
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		State other = (State) obj;
-		return Arrays.deepEquals(board, other.board);
 	}
 
 }
