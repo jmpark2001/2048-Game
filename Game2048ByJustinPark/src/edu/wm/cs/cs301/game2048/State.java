@@ -242,19 +242,22 @@ public class State implements GameState {
 	public int up() {
 		int extraPoints = 0;
 		int value = 0;
-		for(int x=0; x<4; x++) {
-			for(int y=3; y>0; y--) {
-				if(getValue(x, y) != 0) {
-					value = getValue(x, y);
-					if(getValue(x, y-1) == 0) {
-						setValue(x, y, 0);
-						setValue(x, y-1, value);
-					}
-					else {
-						if(getValue(x, y-1) == getValue(x, y)) {
-							setValue(x, y, 0);
-							setValue(x, y-1, value + value);
+		for(int row=0; row<=3; row++) {
+			int mover = 0;
+			for(int col=0; col<=3; col++) {
+				if(getValue(row, col) == 0) {
+					mover += 1;
+				}
+				else {
+					value = getValue(row, col);
+					setValue(row, col, 0);
+					setValue(row, col - mover, value);
+					if(col - mover > 0) {
+						if(getValue(row, col - mover) == getValue(row, col - mover - 1)) {
+							setValue(row, col - mover, 0);
+							setValue(row, col - mover - 1, value + value);
 							extraPoints += value + value;
+							mover += 1;
 						}
 					}
 				}
