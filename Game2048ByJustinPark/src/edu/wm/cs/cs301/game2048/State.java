@@ -99,44 +99,68 @@ public class State implements GameState {
 		return true;
 	}
 
+	public boolean mergeLeft(int xCoor, int yCoor) {
+		int value = getValue(xCoor, yCoor);
+		while(xCoor != 0) {
+			if(getValue(xCoor - 1, yCoor) == value) {
+				return true;
+			}
+			else if(getValue(xCoor - 1, yCoor) != 0){
+				return false;
+			}
+			xCoor--;
+		}
+		return false;
+	}
+	
+	public boolean mergeRight(int xCoor, int yCoor) {
+		int value = getValue(xCoor, yCoor);
+		while(xCoor != 3) {
+			if(getValue(xCoor + 1, yCoor) == value) {
+				return true;
+			}
+			else if(getValue(xCoor + 1, yCoor) != 0) {
+				return false;
+			}
+			xCoor++;
+		}
+		return false;
+	}
+	
+	public boolean mergeUp(int xCoor, int yCoor) {
+		int value = getValue(xCoor, yCoor);
+		while(yCoor != 0) {
+			if(getValue(xCoor, yCoor - 1) == value) {
+				return true;
+			}
+			else if(getValue(xCoor, yCoor - 1) != 0) {
+				return false;
+			}
+			yCoor--;
+		}
+		return false;
+	}
+	
+	public boolean mergeDown(int xCoor, int yCoor) {
+		int value = getValue(xCoor, yCoor);
+		while(yCoor != 3) {
+			if(getValue(xCoor, yCoor + 1) == value) {
+				return true;
+			}
+			else if(getValue(xCoor, yCoor + 1) != 0) {
+				return false;
+			}
+			yCoor++;
+		}
+		return true;
+	}
+	
 	@Override
 	public boolean canMerge() {
 		int value = 0;
-		int row = 0;
-		int col = 0;
-		int middle = 0;
 		for(int x=0; x<4; x++) {
 			for(int y=0; y<4; y++) {
-				if(getValue(x,y) != 0) {
-					row = x;
-					col = y;
-					value = getValue(x,y);
-					while(col < 3) {
-						if(value == getValue(row, col+1)) {
-							if(col - y == 0) {
-								return true;
-							}
-							/*else {
-								middle = col - y;
-								while(middle != 0) {
-									if(getValue(row, col - middle) == 0) {
-										middle--;
-									}
-								}
-							}*/
-							col++;
-						}
-					}
-					while(row < 3) {
-						if(value == getValue(row+1, col)) {
-							if(row - x == 0) {
-								return true;
-							}
-							row++;
-						}
-					}
-					
-				}
+				
 			}
 		}
 		return false;
