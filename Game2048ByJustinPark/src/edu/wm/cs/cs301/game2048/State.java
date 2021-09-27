@@ -153,7 +153,7 @@ public class State implements GameState {
 			}
 			yCoor++;
 		}
-		return true;
+		return false;
 	}
 	
 	@Override
